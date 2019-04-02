@@ -31,24 +31,9 @@ def localEnergy(r,n_particles,n_dimensions,alpha,beta):
     return K + P
 
 @jit(nopython=True)
-def dE_L(r,n_particles,n_dimensions,alpha,beta):
-    derivative = 0
-    for i in range(n_particles):
-        r_i = r[i]
-        square = 0
-        pos = 0
-        for d in range(n_dimensions):
-            if d == 2:
-                pos += beta*r_i[d]
-                square += (beta*r_i[d])**2
-            else:
-                pos += r_i[d]
-                square += r_i[d]**2
-        derivative += -4 -2*(beta + pos) + 8*alpha*square
-    return derivative
-
-@jit(nopython=True)
-def innerProduct(r_k,r_l):
+def innerProduct(a,b):
+    if a.shape[0] != b.shape[0]:
+        raise ValueError('Vector must be of equal size!')
     prod = 0
     for d in range(r_k.shape[0]):
         prod += r_k[d]*r_l[d]
